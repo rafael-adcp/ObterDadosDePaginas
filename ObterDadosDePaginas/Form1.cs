@@ -11,12 +11,13 @@ namespace ObterDadosDePaginas
         {
             InitializeComponent();
             button1.Visible = false;
+            atualizaBrowser();
         }
 
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             button1.Visible = true;
-            //após terminar de atualizar a página ele tenta buscar os dados novamente
+            //após terminar de atualizar a página ele tenta buscar os dados
             obterDados();
         }
 
@@ -25,7 +26,7 @@ namespace ObterDadosDePaginas
 
             try
             {
-                var possiveis = webBrowser1.Document.GetElementsByTagName("span");
+                var possiveis = webBrowser1.Document.GetElementsByTagName(textBoxCriterio.Text);
                 richTextBox1.Text = "";
                 foreach (HtmlElement doc in possiveis)
                 {
@@ -40,8 +41,21 @@ namespace ObterDadosDePaginas
 
         private void button1_Click(object sender, EventArgs e)
         {
-            webBrowser1.Refresh(WebBrowserRefreshOption.Completely);
-            webBrowser1.Navigate(webBrowser1.Url);
+            atualizaBrowser();
+        }
+
+        private void atualizaBrowser()
+        {
+            button1.Visible = false;
+            try
+            {
+                webBrowser1.Refresh(WebBrowserRefreshOption.Completely);
+                webBrowser1.Navigate(textBoxUrl.Text);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
